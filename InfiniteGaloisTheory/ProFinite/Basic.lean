@@ -64,3 +64,41 @@ def finiteIndex_of_open_subgroup {G : ProfiniteGrp}
   Subgroup.finiteIndex_of_finite_quotient H
 
 end ProfiniteGrp
+
+section ProfiniteGrp
+
+namespace ProfiniteGrp
+
+theorem exist_open_compact_subnhds {G : ProfiniteGrp} {U : Set G} (UOpen : IsOpen U) (einU : 1 ∈ U) :∃ W : Set G, IsOpen W ∧ IsCompact W ∧ 1 ∈ W ∧ W ⊆ U:= by
+
+  let N := { s : Set G // IsClopen s ∧ 1 ∈ s }
+  have inter : connectedComponent (1 : G) = ⋂ s : N, s := connectedComponent_eq_iInter_isClopen (1 : G)
+  have cover : Uᶜ ⊆ ⋃ s : N, (s : Set G)ᶜ := by
+    rw[← Set.compl_iInter,Set.compl_subset_compl,← inter,connectedComponent_eq_singleton,Set.singleton_subset_iff]
+    apply einU
+  have scomplOpen: ∀ (s : N), IsOpen (s : Set G)ᶜ := by
+    rintro ⟨s,sClopen,_⟩
+    rw[isOpen_compl_iff]
+    apply IsClopen.isClosed sClopen
+  have UcomplCompact : IsCompact Uᶜ :=  IsClosed.isCompact (isClosed_compl_iff.mpr UOpen)
+  rcases IsCompact.elim_finite_subcover UcomplCompact _ scomplOpen cover with ⟨fin,fincover⟩
+  use ⋂ s ∈ fin, s
+  constructor
+  · have t : ∀ s ∈ fin, IsOpen (s : Set G) := by
+      rintro ⟨s,sClopen,_⟩ _
+      apply IsClopen.isOpen sClopen
+    apply isOpen_biInter_finset t
+  constructor
+  · apply IsClosed.isCompact
+    apply isClosed_biInter
+    rintro ⟨s,sClopen,_⟩ _
+    apply IsClopen.isClosed sClopen
+  constructor
+  · simp only [Set.mem_iInter]
+    rintro ⟨s,_,eins⟩ _
+    apply eins
+  · simp only [← Set.compl_iInter,Set.compl_subset_compl] at fincover
+    exact fincover
+
+
+end ProfiniteGrp
