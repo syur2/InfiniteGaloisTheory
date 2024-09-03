@@ -255,4 +255,27 @@ theorem surjectiveCanonicalMap (P : ProfiniteGrp.{u}) : Function.Surjective (can
 
 end
 
+section
+
+namespace ProfiniteGrp
+open scoped Pointwise
+
+theorem exist_open_symm_subnhds {G : ProfiniteGrp} {W : Set G}
+(WClopen : IsClopen W) (einW : 1 ∈ W) :∃ V : Set G, IsOpen V ∧ V = V⁻¹ ∧ 1 ∈ V ∧ V ⊆ W ∧ W * V ⊆ W :=sorry
+
+def open_subgroup_subnhds {G : ProfiniteGrp} {W : Set G}
+(WClopen : IsClopen W) (einW : 1 ∈ W) : Subgroup G :=sorry
+
+theorem open_subgroup_subnhds_spec {G : ProfiniteGrp} {W : Set G}
+(WClopen : IsClopen W) (einW : 1 ∈ W) :
+IsOpen ((open_subgroup_subnhds WClopen einW) : Set G) ∧
+((open_subgroup_subnhds WClopen einW) : Set G) ⊆ W :=sorry
+
+def OpenNormalSubgroup_subnhds {G : ProfiniteGrp} {U : Set G}
+(UOpen : IsClopen U) (einU : 1 ∈ U) : OpenNormalSubgroup G :=sorry
+
+theorem OpenNormalSubgroup_subnhds_spec {G : ProfiniteGrp} {U : Set G}
+(UOpen : IsClopen U) (einU : 1 ∈ U) : ((OpenNormalSubgroup_subnhds UOpen einU) : Set G) ⊆ U :=sorry
+
+
 end ProfiniteGrp
